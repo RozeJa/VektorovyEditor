@@ -11,6 +11,7 @@ public class Square extends AbstractGeomObject {
     }
 
     public Square(int a) {
+        super();
         this.a = a;
     }
 

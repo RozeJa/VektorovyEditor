@@ -11,6 +11,7 @@ public class Circle extends AbstractGeomObject {
     }
 
     public Circle(int radius) {
+        super();
         this.radius = radius;
     }
 
