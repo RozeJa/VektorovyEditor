@@ -20,7 +20,7 @@ public class Triangle extends AbstractGeomObject {
     @Override
     public boolean contains(int x, int y) { 
         // výška musí být nezáporná
-        if (position.y > y || y + getHeight() < y) 
+        if (position.y > y || position.y + getHeight() < y) 
             return false;
 
         /**
@@ -66,11 +66,8 @@ public class Triangle extends AbstractGeomObject {
 
         g.setColor(color);
         g.drawLine(ax, ay, bx, by);
-        System.out.println(String.format("%s %s %s %s", ax, ay, bx, by));
         g.drawLine(bx, by, cx, cy);
-        System.out.println(String.format("%s %s %s %s", bx, by, cx, cy));
         g.drawLine(cx, cy, ax, ay);
-        System.out.println(String.format("%s %s %s %s", cx, cy, ax, ay));
     }
 
     public int getHeight() {

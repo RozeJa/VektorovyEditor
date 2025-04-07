@@ -11,6 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +26,10 @@ public class MainWindow extends JFrame {
     private JToggleButton btCircle;
     private JToggleButton btRectangle;
     private JToggleButton btTriangle;
-
+    private JToggleButton btSelect;
+    
+    private AbstractGeomObject selectedObject;
+    
     public MainWindow() {
         super("Vektorový editor");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -38,7 +42,7 @@ public class MainWindow extends JFrame {
         add(panel, BorderLayout.CENTER);
         panel.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent e) {
+            public void mouseClicked(MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON1) {
                     if (btCircle.isSelected()) {
                         Circle circle = new Circle(new Point(e.getX(), e.getY()), 50, Color.RED);
@@ -57,6 +61,31 @@ public class MainWindow extends JFrame {
                     panel.repaint();
                 }
             }
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if (selectedObject != null) {
+                    selectedObject.setPosition(e.getX(), e.getY());
+
+                    panel.repaint();
+                    selectedObject = null;
+                }
+            }
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (btSelect.isSelected()) {
+                    selectedObject = panel.selectObject(e.getX(), e.getY());
+                }
+            }
+        });
+        panel.addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                if (selectedObject != null) {
+                    selectedObject.setPosition(e.getX(), e.getY());
+
+                    panel.repaint();
+                }
+            }
         });
 
         setSize(800, 600);
@@ -71,17 +100,20 @@ public class MainWindow extends JFrame {
         btCircle = new JToggleButton("Kruznice");
         btRectangle = new JToggleButton("Obdelnik");
         btTriangle = new JToggleButton("Trojuhelnik");
+        btSelect = new JToggleButton("Vyber");
 
         toolBar.add(btSquare);
         toolBar.add(btCircle);
         toolBar.add(btRectangle);
         toolBar.add(btTriangle);
+        toolBar.add(btSelect);
 
         ButtonGroup gr = new ButtonGroup();
         gr.add(btCircle);
         gr.add(btSquare);
         gr.add(btRectangle);
         gr.add(btTriangle);
+        gr.add(btSelect);
     }
 
     private void initTestData() {

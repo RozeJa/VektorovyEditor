@@ -5,6 +5,7 @@ import cz.uhk.veditor.grobjekty.AbstractGeomObject;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
+import java.util.Optional;
 
 public class GraphPanel extends JPanel {
     List<AbstractGeomObject> objectList;
@@ -23,5 +24,16 @@ public class GraphPanel extends JPanel {
         for (AbstractGeomObject obj : objectList) {
             obj.draw(g2);
         }
+    }
+
+    public AbstractGeomObject selectObject(int x, int y) {
+        Optional<AbstractGeomObject> object = objectList.stream()
+            .filter(o -> o.contains(x, y))
+            .findFirst();
+
+        if (object.isPresent()) {
+            return object.get();
+        }
+        return null;
     }
 }
